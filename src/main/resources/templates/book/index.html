@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Book Page</title>
+<link rel="stylesheet"
+	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+
+	<div class="container">
+		
+		<h2>Book List</h2>
+		<hr />
+
+		<a class="btn btn-primary" href="/book/addbook">Add Book</a>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Title</th>
+					<th>PublishDate</th>
+					<th>Author</th>
+					<th>Page</th>
+					<th>Image</th>
+				</tr>
+			</thead>
+			<tbody th:each="book: ${books}">
+				<tr>
+					<td th:text="${book.id}">1</td>
+					<td th:text="${book.title}">A</td>
+					<td th:text="${book.publishDate}"></td>
+					<td th:text="${book.page}">
+					<td><img th:src="${book.coverImage}" /></td>
+					<td><a th:href="@{/book/{id}(id=${book.id})}">Detail</a>
+
+						<form th:action="@{/book/remove(id=${book.id})}" method="post">
+							<input type="submit" value="Remove" />
+						</form> <!-- <a th:href="@{/book/remove(id=${book.id})}">Remove</a> --> <a
+						th:href="@{/book/edit(id=${book.id})}">Edit</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

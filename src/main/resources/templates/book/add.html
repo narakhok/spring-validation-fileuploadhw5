@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1" />
+<title th:text="${addStatus?'Add Book Page': 'Update Book Page'}">Add
+	Book Page</title>
+<link rel="stylesheet"
+	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+	<div class="container">
+		<div class="panel panel-primary col-md-8 ">
+			<div class="panel-heading ">
+				<h2 th:text="${addStatus==true?'Add Book':'Update Book' }"></h2>
+			</div>
+			<div class="panel-body">
+				<hr>
+				<form th:action="${addStatus==true?'/book/addbook':'/book/update'}"
+					method="post" th:object="${book}">
+					<div class="form-group">
+						<label>Id:</label> <input type="number" class="form-control"
+							th:field="*{id}" />
+					</div>
+					<div class="form-group">
+						<label>Title: </label> <input type="text" class="form-control"
+							th:field="*{title}" /> <span class="error"
+							th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Error
+							Title</span>
+					</div>
+					<div class="form-group">
+						<label>PublishDate:</label> <input type="number"
+							class="form-control" th:field="*{publishDate}" />
+					</div>
+					<div class="form-group">
+						<label>Author:</label> <input type="text" class="form-control"
+							th:field="*{author}" />
+					</div>
+
+					<div class="form-group">
+						<label>Page:</label> <input type="number" class="form-control"
+							th:field="*{page}" />
+					</div>
+
+					<div class="form-group">
+						<label>Image:</label> <input type="text" class="form-control"
+							th:field="*{coverImage}" />
+					</div>
+					<button type="submit" class="btn btn-default"
+						th:text="${addStatus==true?'Add Book': 'Update Book'}">Add
+						User</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1"/>
+<title>User Detail</title>
+<link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+<body>
+	
+	<div class="container">
+		<div class="jumbotron text-center">
+			<h1>Book Store</h1>
+			<p>All books in the world..........!</p>
+		</div>
+		<h2>Book Detail</h2>
+		<hr />
+
+
+		<div th:object="${bookdetail}">
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="thumbnail">
+						<img th:src="*{coverImage}" alt="Paris" />
+
+					</div>
+				</div>
+				<div class="col-sm-7">
+
+					<h2 th:text="*{title}"></h2>
+					<ul style="list-style-type: none">
+						<li th:text="*{publishDate}">Coffee</li>
+						<li th:text="*{author}">Tea</li>
+						<li th:text="*{page}">Milk</li>
+					</ul>					
+					
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+</body>
+</html>
