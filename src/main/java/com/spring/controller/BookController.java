@@ -13,16 +13,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.spring.model.Book;
 import com.spring.service.BookService;
+import com.spring.service.FileUploadService;
 
 @Controller
 public class BookController {
 	@Autowired
 	private BookService bookService;
+	@Autowired
+	private FileUploadService fileUpload;
 
 	// @RequestMapping(value="/index")
-	@GetMapping("/index")
+	@GetMapping(value = { "", "/index" })
 	public String index(Model model) {
 
 		List<Book> books = bookService.findAll();
@@ -45,16 +50,23 @@ public class BookController {
 		return "book/add";
 	}
 
+	// Add vilidator we user @Valid and BindingResult to show resutl of error upload
+	// file
 	@PostMapping("/book/addbook") // @RequestMapping(value="/book/addbook",method = RequestMethod.POST)
-	public String actionAddBook(@Valid Book book, BindingResult result) {
+	public String actionAddBook(@RequestParam("file") MultipartFile file, Model model, @Valid Book book,
+			BindingResult bindingResult) {
 
-		if (result.hasErrors()) {
-			for (FieldError error : result.getFieldErrors()) {
-				System.out.println(error.getField() + ":" + error.getDefaultMessage());
+		if (bindingResult.hasErrors()) {
+			for (FieldError error : bindingResult.getFieldErrors()) {
+				System.out.println(error.getField() + ":" + error.getField());
 
 			}
+			model.addAttribute("addStatus", true);
+			model.addAttribute("book", book);
+			return "/book/add";
 		}
-
+		String filePath = fileUpload.upload(file);
+		book.setCoverImage(filePath);
 		System.out.println(book);
 		bookService.save(book);
 		return "redirect:/index";
@@ -79,9 +91,27 @@ public class BookController {
 	}
 
 	@PostMapping("/book/update") // @RequestMapping(value ="/book/update",method = RequestMethod.POST)
-	public String updateBook(Book book) {
+	public String updateBook(@RequestParam("file") MultipartFile file, Model model, @Valid Book book,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			for (FieldError error : result.getFieldErrors()) {
+				System.out.println(error.getField() + ": " + error.getDefaultMessage());
+			}
+			model.addAttribute("addStatus", false);
+			model.addAttribute("book", book);
+			System.out.println(book);
+			bookService.update(book);
+			return "/book/add";
+		}
+		if (!file.isEmpty()) {
+			System.out.println("file" + file.getOriginalFilename());
+			String filePath = fileUpload.upload(file);
+			book.setCoverImage(filePath);
+		}
+
 		System.out.println(book);
 		bookService.update(book);
+
 		return "redirect:/index";
 	}
 

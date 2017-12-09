@@ -1,15 +1,10 @@
 package com.spring.model;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.NotEmpty;
-
-
 
 public class Book {
 	private int id;
-	@NotEmpty(message = "Book tile cannot be empty!")
-	//@Size(min = 10, max = 30, message = "Book title must be between {2} and {1} characters!")
+	@NotEmpty(message="Please Input title")
 	private String title;
 	private int publishDate;
 	private String author;

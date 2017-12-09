@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/default">
 <head>
 <meta charset="ISO-8859-1" />
 <title th:text="${addStatus?'Add Book Page': 'Update Book Page'}">Add
@@ -8,24 +10,25 @@
 	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
 </head>
 <body>
-	<div class="container">
-		<div class="panel panel-primary col-md-8 ">
+	<div class="container" layout:fragment="content"
+		style="max-width: 500px; margin-left: auto; margin-right: auto;">
+		<div class="panel panel-primary col-md-12 ">
 			<div class="panel-heading ">
 				<h2 th:text="${addStatus==true?'Add Book':'Update Book' }"></h2>
 			</div>
 			<div class="panel-body">
 				<hr>
 				<form th:action="${addStatus==true?'/book/addbook':'/book/update'}"
-					method="post" th:object="${book}">
+					method="post" th:object="${book}" enctype="multipart/form-data">
 					<div class="form-group">
 						<label>Id:</label> <input type="number" class="form-control"
 							th:field="*{id}" />
 					</div>
 					<div class="form-group">
 						<label>Title: </label> <input type="text" class="form-control"
-							th:field="*{title}" /> <span class="error"
-							th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Error
-							Title</span>
+							th:field="*{title}" /> <span
+							th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title
+							Error</span>
 					</div>
 					<div class="form-group">
 						<label>PublishDate:</label> <input type="number"
@@ -44,6 +47,13 @@
 					<div class="form-group">
 						<label>Image:</label> <input type="text" class="form-control"
 							th:field="*{coverImage}" />
+						<table>
+							<tr>
+								<td>File to upload:</td>
+								<td><input type="file" name="file" /></td>
+							</tr>
+
+						</table>
 					</div>
 					<button type="submit" class="btn btn-default"
 						th:text="${addStatus==true?'Add Book': 'Update Book'}">Add
